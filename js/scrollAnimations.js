@@ -3,14 +3,21 @@ import * as THREE from 'three';
 const { gsap, ScrollTrigger } = window;
 gsap.registerPlugin(ScrollTrigger);
 
+// Detect if the user is on a mobile-sized screen
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+// Shrink horizontal panning on mobile, and pull the camera back (Z) to fit the view
+const xMulti = isMobile ? 0.4 : 1.0; 
+const zOffset = isMobile ? 2.5 : 0.0;
+
 const WAYPOINTS = [
-  { pos: new THREE.Vector3( 0.0,  0.0,  6.0), look: new THREE.Vector3(0, 0, 0) }, // hero
-  { pos: new THREE.Vector3(-3.2,  0.6,  4.6), look: new THREE.Vector3(0, 0, 0) }, // memory-1
-  { pos: new THREE.Vector3( 3.4, -0.8,  4.4), look: new THREE.Vector3(0, 0, 0) }, // memory-2
-  { pos: new THREE.Vector3(-2.0,  3.2,  3.6), look: new THREE.Vector3(0, 0, 0) }, // memory-3
-  { pos: new THREE.Vector3( 0.0,  0.0,  9.0), look: new THREE.Vector3(0, 0, 0) }, // timeline
-  { pos: new THREE.Vector3( 2.0,  2.0,  5.5), look: new THREE.Vector3(0, 0, 0) }, // memory-4
-  { pos: new THREE.Vector3( 0.0,  0.0,  3.2), look: new THREE.Vector3(0, 0, 0) }, // outro
+  { pos: new THREE.Vector3( 0.0,             0.0,  6.0 + zOffset), look: new THREE.Vector3(0, 0, 0) }, // hero
+  { pos: new THREE.Vector3(-3.2 * xMulti,    0.6,  4.6 + zOffset), look: new THREE.Vector3(0, 0, 0) }, // memory-1
+  { pos: new THREE.Vector3( 3.4 * xMulti,   -0.8,  4.4 + zOffset), look: new THREE.Vector3(0, 0, 0) }, // memory-2
+  { pos: new THREE.Vector3(-2.0 * xMulti,    3.2,  3.6 + zOffset), look: new THREE.Vector3(0, 0, 0) }, // memory-3
+  { pos: new THREE.Vector3( 0.0,             0.0,  9.0 + zOffset), look: new THREE.Vector3(0, 0, 0) }, // timeline
+  { pos: new THREE.Vector3( 2.0 * xMulti,    2.0,  5.5 + zOffset), look: new THREE.Vector3(0, 0, 0) }, // memory-4
+  { pos: new THREE.Vector3( 0.0,             0.0,  3.2 + zOffset), look: new THREE.Vector3(0, 0, 0) }, // outro
 ];
 
 export function initScrollAnimations({ camera, couple }) {

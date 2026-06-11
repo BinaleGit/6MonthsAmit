@@ -9,8 +9,18 @@
 
    export function createCoupleAnimation(scene) {
      const group = new THREE.Group();
-     // Pushed back and centered so they sit deep inside the falling scene
-     group.position.set(0, 0, -3); 
+
+     // ---------- Mobile-friendly sizing ----------
+     // Narrow phone screens can't fit the full horizontal platform
+     // spread, so we squish the side-to-side motion by 60% and shrink
+     // the whole group slightly to keep the figures readable.
+     const isMobile = window.matchMedia('(max-width: 768px)').matches;
+     const xMulti   = isMobile ? 0.4 : 1.0;
+     group.scale.setScalar(isMobile ? 0.85 : 1.0);
+
+     // Pushed back and centered so they sit deep inside the falling scene.
+     // Pull back a touch more on mobile so the whole tower fits.
+     group.position.set(0, 0, isMobile ? -4.0 : -3.0);
      scene.add(group);
    
      /* ---------- 1. Create the Bouncy Heart Platforms ---------- */
@@ -57,11 +67,12 @@
      const bumpMap = new Map(); // Tracks the physical bounce state of every individual heart
    
      function getLogicalPlatformPos(index, elapsed) {
-       // Math logic creates a staggering left/right path
+       // Math logic creates a staggering left/right path. On mobile we
+       // squish the horizontal swing so platforms don't leave the frame.
        const seed = index * 1.37;
-       const pX = Math.sin(seed) * 2.2;
+       const pX = Math.sin(seed) * 2.2 * xMulti;
        const pZ = Math.cos(seed * 1.1) * 1.5;
-       
+
        // The core illusion: Y falls linearly over time
        const pY = (index * verticalSpacing) - (elapsed * fallSpeed);
        return new THREE.Vector3(pX, pY, pZ);

@@ -19,9 +19,12 @@ import { createCoupleAnimation } from './coupleAnimation.js';
   const preloader = document.getElementById('preloader');
 
   /* ---------- Build the scene ---------- */
+  // Cut heavy work in half for phones so older devices don't heat up / stutter.
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
   const { renderer, scene, camera } = createScene(canvas);
   const hero      = createHeroObject(scene);
-  const particles = createParticles(scene, { count: 1400, radius: 18 });
+  const particles = createParticles(scene, { count: isMobile ? 600 : 1400, radius: 18 });
   const stars     = createShootingStars(scene, camera);
   const couple    = createCoupleAnimation(scene);   
   
