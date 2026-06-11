@@ -103,6 +103,23 @@ Open `js/scrollAnimations.js` and edit the `WAYPOINTS` array. Each entry is a ca
 
 Built for modern evergreen browsers (Chrome, Edge, Firefox, Safari 16+). Reduced-motion users get a static experience automatically.
 
+## Deploying to GitHub Pages
+
+The site is 100% static (no build step), so deployment is just "push to `main` and GitHub publishes it." The workflow lives in `.github/workflows/deploy.yml`.
+
+**One-time setup on GitHub:**
+
+1. Push your code to a repo (any name — for example `AmitNRoee6Months`).
+2. Open the repo → **Settings → Pages**.
+3. Under **Build and deployment → Source**, choose **GitHub Actions**.
+4. Push to `main` (or click *Run workflow* in the Actions tab). The workflow uploads the repo and publishes it.
+5. After about a minute, your site is live at:
+   ```
+   https://<your-github-username>.github.io/<repo-name>/
+   ```
+
+**Heads up — privacy:** GitHub Pages is public. Anyone with the URL can see your photos. If you want it private, make the repo private and use GitHub Pages on a paid plan, or host it on a service that supports password-protection.
+
 ---
 
 Happy six months 💌

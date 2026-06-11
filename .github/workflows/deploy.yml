@@ -1,0 +1,42 @@
+name: Deploy to GitHub Pages
+
+# This is a 100%-static site (HTML/CSS/JS, no build step needed),
+# so the workflow just uploads the repo as-is and publishes it.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:        # also runs when you click "Run workflow" in the Actions tab
+
+# Permissions required by the official deploy-pages action
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one production deploy at a time; cancel any superseded run
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: https://binalegit.github.io/AmitNRoee6Months/
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site as Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .       # publish the entire repo root
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,25 @@
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+$RECYCLE.BIN/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs / debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Node (not used by this site, but harmless to ignore)
+node_modules/
+
+# Local Cursor / AI tooling
+.cursor/
+.cursorrules
