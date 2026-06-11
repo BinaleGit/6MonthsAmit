@@ -1,23 +1,18 @@
+# Deploy static site (repo root) to GitHub Pages on every push to main
 name: Deploy to GitHub Pages
-
-# This is a 100%-static site (HTML/CSS/JS, no build step needed),
-# so the workflow just uploads the repo as-is and publishes it.
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:        # also runs when you click "Run workflow" in the Actions tab
+    branches: [main, master]
 
-# Permissions required by the official deploy-pages action
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Only one production deploy at a time; cancel any superseded run
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: 'pages'
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -29,17 +24,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Requires: repo Settings → Pages → Source = "GitHub Actions" (do this once manually)
       - name: Setup Pages
-        uses: actions/configure-pages@v5
-        with:
-          # Auto-enables Pages on the repo if it isn't on yet, so the
-          # workflow doesn't need a manual Settings → Pages click first.
-          enablement: true
+        uses: actions/configure-pages@v4
 
-      - name: Upload site as Pages artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .       # publish the entire repo root
+          path: '.'
 
       - name: Deploy to GitHub Pages
         id: deployment
