@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>חצי שנה • מכתב אהבה</title>
+  <meta name="description" content="מכתב אהבה אינטראקטיבי החוגג חצי שנה יחד." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500&family=Frank+Ruhl+Libre:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <div id="preloader" class="preloader">
+    <div class="preloader__inner">
+      <div class="preloader__heart"></div>
+      <p class="preloader__text">טוען את הסיפור שלנו…</p>
+    </div>
+  </div>
+
+  <canvas id="webgl" class="webgl" aria-hidden="true"></canvas>
+
+  <div class="overlay overlay--vignette" aria-hidden="true"></div>
+  <div class="overlay overlay--grain" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="site-header__brand">
+      <span class="site-header__mark">✦</span>
+      <span class="site-header__names">R &amp; A</span>
+    </div>
+    <div class="site-header__meta">חצי שנה · 29.7</div>
+  </header>
+
+  <button id="music-btn" class="music-btn">לנגן את השיר שלנו 🎵</button>
+  <audio id="bg-music" loop>
+    <source src="./assets/our-song.mp3" type="audio/mpeg">
+  </audio>
+
+  <main id="content">
+
+    <section class="panel panel--hero" data-panel="hero">
+      <div class="panel__inner panel__inner--center">
+        <p class="eyebrow reveal">מכתב אהבה, באור</p>
+        <h1 class="title reveal">
+          <span class="title__line">חצי שנה</span>
+          <span class="title__line title__line--accent"><em>איתך.</em></span>
+        </h1>
+        <p class="lede reveal">
+          תגללי לאט. זה בשבילך.
+        </p>
+        <div class="scroll-hint reveal" aria-hidden="true">
+          <span>לגלול</span>
+          <span class="scroll-hint__line"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Memory chapters are text-only. Photos live exclusively in the
+         horizontal gallery below so they each appear only once. -->
+    <section class="panel panel--memory" data-panel="memory-1">
+      <div class="panel__inner panel__inner--start">
+        <span class="chapter reveal">פרק ראשון</span>
+        <h2 class="memory__title reveal">הלילה בו נפגשנו</h2>
+        <p class="memory__body reveal">
+          אני זוכר בדיוק איך החדר נשמע בפעם הראשונה שצחקת ממשהו שאמרתי. כל השאר נהיה קצת יותר שקט — כאילו העולם יצא בנימוס החוצה כדי שאוכל להקדיש לך את כל תשומת הלב.
+        </p>
+      </div>
+    </section>
+
+    <section class="panel panel--memory" data-panel="memory-2">
+      <div class="panel__inner panel__inner--end">
+        <span class="chapter reveal">פרק שני</span>
+        <h2 class="memory__title reveal">ההרפתקאות הקטנות שלנו</h2>
+        <p class="memory__body reveal">
+          ההליכות הארוכות שהפכו לשיחות ארוכות עוד יותר. הפלייליסטים שהמשכנו להוסיף אליהם שירים בלי להגיד אחד לשנייה. העיר ההיא, הבית קפה ההוא, אותו אחר צהריים שבו הזמן שכח מה הוא אמור לעשות.
+        </p>
+      </div>
+    </section>
+
+    <section class="panel panel--memory" data-panel="memory-3">
+      <div class="panel__inner panel__inner--start">
+        <span class="chapter reveal">פרק שלישי</span>
+        <h2 class="memory__title reveal">הדברים הקטנים</h2>
+        <p class="memory__body reveal">
+          הדרך שבה את גונבת לי את הקפוצ'ון. ההודעות הקוליות שאת משאירה כשאת לא מצליחה לישון. הקמט הקטן בין הגבות שלך כשאת חושבת. חצי שנה עברה ואני עדיין אוסף אותם כמו צדפים.
+        </p>
+      </div>
+    </section>
+
+    <!-- HORIZONTAL PHOTO GALLERY
+         The page pins here and scrolls horizontally through the 4 photos.
+         Each photo appears exactly once across the entire site. -->
+    <section class="panel panel--timeline" id="timeline" data-panel="timeline">
+      <div class="timeline__intro">
+        <span class="chapter reveal">רגעים</span>
+        <h2 class="timeline__heading reveal">תמונות מהחצי שנה שלנו</h2>
+      </div>
+      <div class="timeline__track" id="timeline-track">
+        <div class="timeline__item">
+          <figure class="memory__photo">
+            <img src="./assets/photo-01.jpg" alt="" onerror="this.parentNode.style.display='none'"/>
+            <figcaption>הלילה הראשון שלנו</figcaption>
+          </figure>
+        </div>
+        <div class="timeline__item">
+          <figure class="memory__photo">
+            <img src="./assets/photo-02.jpg" alt="" onerror="this.parentNode.style.display='none'"/>
+            <figcaption>הולכים לאיבוד בעיר</figcaption>
+          </figure>
+        </div>
+        <div class="timeline__item">
+          <figure class="memory__photo">
+            <img src="./assets/photo-03.jpg" alt="" onerror="this.parentNode.style.display='none'"/>
+            <figcaption>קסם יומיומי</figcaption>
+          </figure>
+        </div>
+        <div class="timeline__item">
+          <figure class="memory__photo">
+            <img src="./assets/photo-04.jpg" alt="" onerror="this.parentNode.style.display='none'"/>
+            <figcaption>למקומות שנגיע אליהם</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel--memory" data-panel="memory-4">
+      <div class="panel__inner panel__inner--center">
+        <span class="chapter reveal">פרק רביעי</span>
+        <h2 class="memory__title reveal">מסתכלים קדימה</h2>
+        <p class="memory__body reveal">
+          חצי שנה מאחורינו, ואנחנו רק מתחילים. אני לא יכול לחכות לתכנן את הימים שלנו יחד, משגרת היומיום שלנו ועד לטיול שלנו ביפן, תאילנד, וייטנאם והפיליפינים בהמשך השנה. אני מוכן לכל טיסה, נסיעת רכבת ושקיעה איתך.
+        </p>
+      </div>
+    </section>
+
+    <section class="panel panel--outro" data-panel="outro">
+      <div class="panel__inner panel__inner--center">
+        <p class="eyebrow reveal">לחצי השנה הבאה, ולזו שאחריה</p>
+        <h2 class="outro__title reveal">
+          <span>חצי שנה</span>
+          <span class="outro__title--accent">שמחה</span>
+          <span>אהובה שלי.</span>
+        </h2>
+        <p class="signature reveal">
+          — שלך, תמיד
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script type="module" src="./js/main.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const musicBtn = document.getElementById('music-btn');
+      const bgMusic = document.getElementById('bg-music');
+      if (musicBtn && bgMusic) {
+        musicBtn.addEventListener('click', () => {
+          if (bgMusic.paused) {
+            musicBtn.innerHTML = "לעצור את השיר ⏸️";
+          } else {
+            musicBtn.innerHTML = "לנגן את השיר שלנו 🎵";
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
