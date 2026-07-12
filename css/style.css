@@ -590,11 +590,18 @@ body {
 .memory__video {
   width: 100%;
   max-width: 600px;
+  min-height: 400px; /* Pre-allocate space so ScrollTrigger doesn't collapse before load */
   border-radius: 8px;
   box-shadow:
     0 30px 60px -20px rgba(0, 0, 0, 0.6),
     0 0 0 1px rgba(255, 255, 255, 0.04);
   background: var(--bg-night);
+}
+
+@media (max-width: 720px) {
+  .memory__video {
+    min-height: 60vh;
+  }
 }
 
 @media (max-width: 720px) {

@@ -66,6 +66,14 @@ export function initScrollAnimations({ camera, couple }) {
 
     // Force load for mobile to prevent black screens
     video.load();
+    
+    // Crucial for mobile: when video knows its dimensions, refresh ScrollTrigger 
+    // so that subsequent sections (like flower pin and black overlay) are positioned correctly.
+    if (video.readyState >= 1) {
+      ScrollTrigger.refresh();
+    } else {
+      video.addEventListener('loadedmetadata', () => ScrollTrigger.refresh());
+    }
 
     const safePlay = () => {
       const p = video.play();
@@ -112,6 +120,7 @@ export function initScrollAnimations({ camera, couple }) {
     }
 
     // Preload first frame immediately to draw something initially
+    images[0].decoding = "async";
     images[0].onload = () => {
       renderFlower();
     };
@@ -124,13 +133,16 @@ export function initScrollAnimations({ camera, couple }) {
       
       // Load frames in batches to avoid freezing the browser
       let i = 1;
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
       function loadBatch() {
-        const batchEnd = Math.min(i + 10, frameCount);
+        const batchSize = isMobile ? 3 : 8;
+        const batchEnd = Math.min(i + batchSize, frameCount);
         for (; i < batchEnd; i++) {
+          images[i].decoding = "async";
           images[i].src = currentFrame(i);
         }
         if (i < frameCount) {
-          setTimeout(loadBatch, 50);
+          setTimeout(loadBatch, isMobile ? 120 : 60);
         }
       }
       loadBatch();
@@ -139,7 +151,7 @@ export function initScrollAnimations({ camera, couple }) {
     // Trigger loading when scrolling near the flower section
     ScrollTrigger.create({
       trigger: flowerSection,
-      start: "top 300%", // Start loading when 3 viewports away
+      start: "top bottom", // Start loading only when the section enters the screen
       onEnter: loadRestOfFrames,
       once: true
     });

@@ -17,11 +17,12 @@ export function createHeroObject(scene) {
   heartShape.bezierCurveTo(x + 7, y, x + 5, y + 5, x + 5, y + 5);
 
   /* ---------- Extrude into 3D ---------- */
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
   const extrudeSettings = {
     depth: 2.5,
     bevelEnabled: true,
-    bevelSegments: 4,
-    steps: 2,
+    bevelSegments: isMobile ? 1 : 2,
+    steps: 1,
     bevelSize: 1.5,
     bevelThickness: 1.5
   };
@@ -39,20 +40,12 @@ export function createHeroObject(scene) {
   geometry.rotateZ(Math.PI); 
 
   /* ---------- Glass Material ---------- */
-  const material = new THREE.MeshPhysicalMaterial({
+  const material = new THREE.MeshStandardMaterial({
     color: new THREE.Color('#ffd2e6'),
-    metalness: 0.1,
-    roughness: 0.15,
-    transmission: 0.85, 
-    thickness: 1.2,
-    ior: 1.6,
-    attenuationColor: new THREE.Color('#ff79c6'),
-    attenuationDistance: 1.4,
-    clearcoat: 1.0,
-    clearcoatRoughness: 0.05,
-    sheen: 1.0,
-    sheenColor: new THREE.Color('#f6c478'),
-    sheenRoughness: 0.5,
+    metalness: 0.2,
+    roughness: 0.2,
+    transparent: true,
+    opacity: 0.85,
     emissive: new THREE.Color('#3a1530'),
     emissiveIntensity: 0.6,
     flatShading: true, 

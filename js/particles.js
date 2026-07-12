@@ -59,7 +59,7 @@ export function createParticles(scene, { count = 1400, radius = 18 } = {}) {
     uniforms: {
       uTime:      { value: 0 },
       uPointer:   { value: new THREE.Vector2(0, 0) }, // smoothed -1..1
-      uPixelRatio:{ value: Math.min(window.devicePixelRatio, 2) },
+      uPixelRatio:{ value: Math.min(window.devicePixelRatio, window.matchMedia('(max-width: 768px)').matches ? 1 : 1.5) },
     },
     vertexShader: /* glsl */`
       attribute vec3  aColor;
@@ -132,7 +132,7 @@ export function createParticles(scene, { count = 1400, radius = 18 } = {}) {
   window.addEventListener('pointermove', onPointerMove, { passive: true });
 
   function onResize() {
-    material.uniforms.uPixelRatio.value = Math.min(window.devicePixelRatio, 2);
+    material.uniforms.uPixelRatio.value = Math.min(window.devicePixelRatio, window.matchMedia('(max-width: 768px)').matches ? 1 : 1.5);
   }
   window.addEventListener('resize', onResize);
 

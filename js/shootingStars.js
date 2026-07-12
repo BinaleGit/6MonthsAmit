@@ -64,9 +64,9 @@ function makeStreakTexture(w = 512, h = 32) {
 }
 
 export function createShootingStars(scene, camera, {
-  poolSize = 3,
+  poolSize = window.matchMedia("(max-width: 768px)").matches ? 1 : 2,
   // Avg seconds between spawns — picked randomly inside [min, max].
-  spawnInterval = [6, 14],
+  spawnInterval = window.matchMedia("(max-width: 768px)").matches ? [10, 20] : [6, 14],
   streakLength = 3.0,
   streakWidth  = 0.20,
   // Where stars live in world space (deep behind the crystal so they read

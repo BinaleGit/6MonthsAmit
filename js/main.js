@@ -24,7 +24,7 @@ import { createCoupleAnimation } from './coupleAnimation.js';
 
   const { renderer, scene, camera } = createScene(canvas);
   const hero      = createHeroObject(scene);
-  const particles = createParticles(scene, { count: isMobile ? 600 : 1400, radius: 18 });
+  const particles = createParticles(scene, { count: isMobile ? 80 : 250, radius: 18 });
   const stars     = createShootingStars(scene, camera);
   const couple    = createCoupleAnimation(scene);   
   

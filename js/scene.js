@@ -8,14 +8,15 @@
 import * as THREE from 'three';
 
 export function createScene(canvas) {
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
   /* ---------- Renderer ---------- */
   const renderer = new THREE.WebGLRenderer({
     canvas,
-    antialias: true,
+    antialias: !isMobile,
     alpha: true,            // transparent background so CSS gradient shows through
     powerPreference: 'high-performance',
   });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1 : 1.5));
   renderer.setSize(window.innerWidth, window.innerHeight, false);
   renderer.setClearColor(0x000000, 0); // transparent
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -69,7 +70,8 @@ export function createScene(canvas) {
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     renderer.setSize(w, h, false);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1 : 1.5));
   }
   window.addEventListener('resize', handleResize);
 

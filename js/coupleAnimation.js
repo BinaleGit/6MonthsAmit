@@ -31,7 +31,7 @@
      cloudShape.bezierCurveTo(-5, 4, -5, 0, -2, 0);
      cloudShape.bezierCurveTo(-2, -2, 0, -2, 0, 0);
    
-     const extrudeSettings = { depth: 1.5, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.5, bevelThickness: 0.5 };
+     const extrudeSettings = { depth: 1.5, bevelEnabled: true, bevelSegments: isMobile ? 1 : 2, steps: 1, bevelSize: 0.5, bevelThickness: 0.5 };
      const cloudGeo = new THREE.ExtrudeGeometry(cloudShape, extrudeSettings);
      
      cloudGeo.computeBoundingBox();
@@ -40,9 +40,9 @@
      cloudGeo.translate(-center.x, -center.y, -center.z);
      
      const baseCloudScale = 0.08; 
-     const cloudMat = new THREE.MeshPhysicalMaterial({
+     const cloudMat = new THREE.MeshStandardMaterial({
        color: '#ffffff', emissive: '#c9a4ff', emissiveIntensity: 0.15, 
-       metalness: 0.05, roughness: 0.6, transmission: 0.6, thickness: 0.8, transparent: true, opacity: 0.95
+       metalness: 0.05, roughness: 0.6, transparent: true, opacity: 0.8
      });
    
      const numPlatforms = 8;
@@ -57,15 +57,15 @@
      const shipGroup = new THREE.Group();
      shipGroup.visible = false;
    
-     const domeMat = new THREE.MeshPhysicalMaterial({ color: '#ffffff', transmission: 0.9, roughness: 0.1, thickness: 0.5 });
-     const dome = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16, 0, Math.PI * 2, 0, Math.PI / 2), domeMat);
+     const domeMat = new THREE.MeshStandardMaterial({ color: '#ffffff', transparent: true, opacity: 0.5, roughness: 0.1 });
+     const dome = new THREE.Mesh(new THREE.SphereGeometry(0.5, isMobile ? 8 : 16, isMobile ? 8 : 16, 0, Math.PI * 2, 0, Math.PI / 2), domeMat);
      
      const baseMat = new THREE.MeshStandardMaterial({ color: '#aaaaaa', metalness: 0.8, roughness: 0.2 });
-     const shipBase = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.4, 0.2, 32), baseMat);
+     const shipBase = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.4, 0.2, isMobile ? 16 : 32), baseMat);
      shipBase.position.y = -0.1;
      
      const ringMat = new THREE.MeshBasicMaterial({ color: '#c9a4ff' });
-     const shipRing = new THREE.Mesh(new THREE.TorusGeometry(0.85, 0.04, 8, 32), ringMat);
+     const shipRing = new THREE.Mesh(new THREE.TorusGeometry(0.85, 0.04, isMobile ? 4 : 8, isMobile ? 16 : 32), ringMat);
      shipRing.rotation.x = Math.PI / 2;
      shipRing.position.y = -0.05;
    
@@ -127,17 +127,17 @@
      /* ---------- 4. Create the Articulated Figures ---------- */
      function createPerson(colorHex, isGirl) {
        const figGroup = new THREE.Group();
-       const mat = new THREE.MeshPhysicalMaterial({ color: colorHex, transmission: 0.8, roughness: 0.2, emissive: colorHex, emissiveIntensity: 0.4 });
+       const mat = new THREE.MeshStandardMaterial({ color: colorHex, transparent: true, opacity: 0.8, roughness: 0.2, emissive: colorHex, emissiveIntensity: 0.4 });
    
-       const head = new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 16), mat); head.position.y = 0.48;
-       const torso = new THREE.Mesh(isGirl ? new THREE.ConeGeometry(0.1, 0.28, 16) : new THREE.CylinderGeometry(0.08, 0.05, 0.3, 16), mat);
+       const head = new THREE.Mesh(new THREE.SphereGeometry(0.09, isMobile ? 8 : 12, isMobile ? 8 : 12), mat); head.position.y = 0.48;
+       const torso = new THREE.Mesh(isGirl ? new THREE.ConeGeometry(0.1, 0.28, isMobile ? 8 : 12) : new THREE.CylinderGeometry(0.08, 0.05, 0.3, isMobile ? 8 : 12), mat);
        torso.position.y = isGirl ? 0.22 : 0.25;
        
-       const legGeo = new THREE.CylinderGeometry(0.03, 0.02, 0.2, 8); legGeo.translate(0, -0.1, 0); 
+       const legGeo = new THREE.CylinderGeometry(0.03, 0.02, 0.2, isMobile ? 4 : 6); legGeo.translate(0, -0.1, 0); 
        const lLeg = new THREE.Mesh(legGeo, mat); lLeg.position.set(-0.04, 0.12, 0);
        const rLeg = new THREE.Mesh(legGeo, mat); rLeg.position.set(0.04, 0.12, 0);
    
-       const armGeo = new THREE.CylinderGeometry(0.02, 0.015, 0.22, 8); armGeo.translate(0, -0.11, 0);
+       const armGeo = new THREE.CylinderGeometry(0.02, 0.015, 0.22, isMobile ? 4 : 6); armGeo.translate(0, -0.11, 0);
        const armX = isGirl ? 0.08 : 0.11; 
        const lArm = new THREE.Mesh(armGeo, mat); lArm.position.set(-armX, 0.36, 0);
        const rArm = new THREE.Mesh(armGeo, mat); rArm.position.set(armX, 0.36, 0);
