@@ -23,8 +23,9 @@
   --glow-gold:      0 0 60px rgba(246, 196, 120, 0.25);
 
   /* Type */
-  --font-display:   'Frank Ruhl Libre', 'Cormorant Garamond', 'Georgia', serif;
-  --font-ui:        'Assistant', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display:   'Bellefair', 'Frank Ruhl Libre', 'Georgia', serif;
+  --font-ui:        'Heebo', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-cool:      'Amatic SC', cursive;
 
   /* Layout */
   --gutter:         clamp(1.5rem, 5vw, 6rem);
@@ -115,9 +116,9 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 1.25rem var(--gutter);
-  font-size: 0.78rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: none;
   color: var(--ink-soft);
   pointer-events: none; /* let scroll/3d hover pass through */
 }
@@ -136,9 +137,8 @@ body {
 
 .site-header__names {
   font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1rem;
-  letter-spacing: 0.05em;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
   text-transform: none;
   color: var(--ink);
 }
@@ -175,25 +175,24 @@ body {
 
 /* ---------- Typography ---------- */
 .eyebrow {
-  font-size: 0.78rem;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  text-transform: none;
   color: var(--gold);
   margin: 0;
 }
 
 .chapter {
   font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.95rem;
-  letter-spacing: 0.1em;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
   color: var(--rose);
   text-transform: lowercase;
 }
 
 .title {
   font-family: var(--font-display);
-  font-weight: 300;
+  font-weight: 400;
   font-size: clamp(3rem, 10vw, 8rem);
   line-height: 0.95;
   letter-spacing: -0.02em;
@@ -207,7 +206,10 @@ body {
   -webkit-background-clip: text;
           background-clip: text;
   color: transparent;
-  font-style: italic;
+}
+
+.title__line--accent em {
+  font-style: normal;
 }
 
 .lede {
@@ -220,8 +222,7 @@ body {
 .memory__title {
   font-family: var(--font-display);
   font-weight: 400;
-  font-style: italic;
-  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
   line-height: 1.05;
   letter-spacing: -0.01em;
   margin: 0;
@@ -256,9 +257,9 @@ body {
 
 .memory__photo figcaption {
   padding: 0.6rem 0.9rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: none;
   color: var(--ink-faint);
   background: rgba(13, 10, 26, 0.6);
 }
@@ -266,7 +267,7 @@ body {
 /* Outro */
 .outro__title {
   font-family: var(--font-display);
-  font-weight: 300;
+  font-weight: 400;
   font-size: clamp(2.6rem, 8vw, 6rem);
   line-height: 1;
   letter-spacing: -0.02em;
@@ -278,7 +279,6 @@ body {
 }
 
 .outro__title--accent {
-  font-style: italic;
   background: linear-gradient(120deg, var(--gold-soft) 0%, var(--rose) 50%, var(--magenta) 100%);
   -webkit-background-clip: text;
           background-clip: text;
@@ -288,8 +288,7 @@ body {
 
 .signature {
   font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   color: var(--ink-soft);
   margin-top: 2rem;
 }
@@ -301,9 +300,9 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 0.6rem;
-  font-size: 0.7rem;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: none;
   color: var(--ink-faint);
 }
 
@@ -383,16 +382,15 @@ body {
 
 .preloader__text {
   font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.95rem;
-  letter-spacing: 0.15em;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
   color: var(--ink-soft);
   margin: 0;
 }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 720px) {
-  .site-header { font-size: 0.7rem; }
+  .site-header { font-size: 0.8rem; }
   .panel { padding: 5rem 1.25rem; }
   .panel__inner--right { text-align: left; align-items: flex-start; margin-left: 0; margin-right: auto; }
   .memory__body { max-width: none; }
@@ -419,9 +417,9 @@ body {
 
   color: var(--rose);
   font-family: var(--font-ui);
-  font-size: 0.78rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: none;
 
   cursor: pointer;
   transition: transform 0.35s ease, border-color 0.35s ease,
@@ -476,7 +474,7 @@ body {
     bottom: 1rem;
     right: 1rem;
     padding: 0.55rem 0.95rem 0.55rem 0.75rem;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -514,7 +512,6 @@ body {
 .timeline__heading {
   font-family: var(--font-display);
   font-weight: 400;
-  font-style: italic;
   font-size: clamp(2.4rem, 6vw, 4.5rem);
   line-height: 1;
   letter-spacing: -0.01em;
@@ -578,6 +575,28 @@ body {
   text-align: center;
 }
 
+/* =============================================================
+   VIDEOS
+   ============================================================= */
+.panel--video {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  padding: 6rem var(--gutter);
+  align-items: center;
+  justify-content: center;
+}
+
+.memory__video {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 8px;
+  box-shadow:
+    0 30px 60px -20px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+  background: var(--bg-night);
+}
+
 @media (max-width: 720px) {
   .timeline__item { width: 72vw; }
   .timeline__track { gap: 1.5rem; padding: 0 1.25rem; }
@@ -593,4 +612,61 @@ body {
     scroll-behavior: auto !important;
   }
   .reveal { opacity: 1; transform: none; }
+}
+
+/* ---------- Flower Sequence ---------- */
+.panel--flower {
+  position: relative;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  z-index: 5;
+}
+
+.flower-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+#flower-canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  opacity: 0; /* will fade in via JS */
+}
+
+.flower-texts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.flower-text {
+  position: absolute;
+  font-family: var(--font-cool);
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-weight: 700;
+  text-align: center;
+  color: var(--ink);
+  opacity: 0;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+  width: 90%;
+  max-width: 800px;
 }
