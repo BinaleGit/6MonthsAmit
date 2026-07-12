@@ -100,6 +100,24 @@ export function initScrollAnimations({ camera, couple }) {
     });
   });
 
+  // 3.5 Lower background music volume when in the videos section
+  const firstVideo = document.querySelector('[data-panel="video-1"]');
+  const lastVideo = document.querySelector('[data-panel="video-3"]');
+  const bgMusic = document.getElementById('bg-music');
+
+  if (firstVideo && lastVideo && bgMusic) {
+    ScrollTrigger.create({
+      trigger: firstVideo,
+      endTrigger: lastVideo,
+      start: "top 75%",
+      end: "bottom 25%",
+      onEnter: () => gsap.to(bgMusic, { volume: 0.05, duration: 1.5, overwrite: "auto" }),
+      onLeave: () => gsap.to(bgMusic, { volume: 0.4, duration: 1.5, overwrite: "auto" }),
+      onEnterBack: () => gsap.to(bgMusic, { volume: 0.05, duration: 1.5, overwrite: "auto" }),
+      onLeaveBack: () => gsap.to(bgMusic, { volume: 0.4, duration: 1.5, overwrite: "auto" })
+    });
+  }
+
   // 4. Flower Sequence
   const flowerSection = document.getElementById('flower-section');
   const flowerCanvas = document.getElementById('flower-canvas');
