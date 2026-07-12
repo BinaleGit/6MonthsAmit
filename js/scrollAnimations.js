@@ -66,14 +66,6 @@ export function initScrollAnimations({ camera, couple }) {
 
     // Force load for mobile to prevent black screens
     video.load();
-    
-    // Crucial for mobile: when video knows its dimensions, refresh ScrollTrigger 
-    // so that subsequent sections (like flower pin and black overlay) are positioned correctly.
-    if (video.readyState >= 1) {
-      ScrollTrigger.refresh();
-    } else {
-      video.addEventListener('loadedmetadata', () => ScrollTrigger.refresh());
-    }
 
     const safePlay = () => {
       const p = video.play();
@@ -204,6 +196,7 @@ export function initScrollAnimations({ camera, couple }) {
         end: "+=400%", // pin for 4 viewport heights
         pin: true,
         scrub: 0.5,
+        anticipatePin: 1, // Add this to help smooth pinning on mobile
         onUpdate: () => renderFlower()
       }
     });
@@ -239,7 +232,7 @@ export function initScrollAnimations({ camera, couple }) {
     );
 
     // Fade out the canvas itself at the end of the flower sequence
-    tlFlower.to(flowerCanvas, { opacity: 0, duration: 0.05 }, 0.95);
+    tlFlower.to(flowerCanvas, { opacity: 0, duration: 0.05 }, 0.98);
 
     // Fade OUT the black overlay (MUST be created after the pin so it calculates bottom correctly)
     if (blackOverlay) {
@@ -251,8 +244,8 @@ export function initScrollAnimations({ camera, couple }) {
           immediateRender: false,
           scrollTrigger: {
             trigger: flowerSection,
-            start: "bottom center",
-            end: "bottom top",
+            start: "bottom bottom",
+            end: "bottom center",
             scrub: true
           }
         }
