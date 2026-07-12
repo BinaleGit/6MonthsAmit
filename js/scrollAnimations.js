@@ -216,6 +216,9 @@ export function initScrollAnimations({ camera, couple }) {
       { opacity: 0, duration: 0.05 }, 0.95
     );
 
+    // Fade out the canvas itself at the end of the flower sequence
+    tlFlower.to(flowerCanvas, { opacity: 0, duration: 0.05 }, 0.95);
+
     // Fade OUT the black overlay (MUST be created after the pin so it calculates bottom correctly)
     if (blackOverlay) {
       gsap.fromTo(blackOverlay,
