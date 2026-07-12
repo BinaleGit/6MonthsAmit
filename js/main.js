@@ -56,6 +56,27 @@ import { createCoupleAnimation } from './coupleAnimation.js';
     requestAnimationFrame(() => preloader.classList.add('is-hidden'));
   });
 
+  /* ---------- Unlock videos for mobile on first tap ---------- */
+  const unlockVideos = () => {
+    document.querySelectorAll('video').forEach(vid => {
+      // If the video is not playing, we can try to play and pause it to unlock
+      if (vid.paused) {
+        const p = vid.play();
+        if (p !== undefined) {
+          p.then(() => {
+            // Pause immediately unless it's scrolled into view
+            // ScrollTrigger manages the actual playback state
+            vid.pause();
+          }).catch(() => {});
+        }
+      }
+    });
+    document.removeEventListener('touchstart', unlockVideos);
+    document.removeEventListener('click', unlockVideos);
+  };
+  document.addEventListener('touchstart', unlockVideos, { once: true });
+  document.addEventListener('click', unlockVideos, { once: true });
+
   /* ---------- Expose for debugging in console ---------- */
   window.__app = { renderer, scene, camera, hero, particles, stars, couple, THREE };
 })();

@@ -64,13 +64,23 @@ export function initScrollAnimations({ camera, couple }) {
     const video = panel.querySelector('video');
     if (!video) return;
 
+    // Force load for mobile to prevent black screens
+    video.load();
+
+    const safePlay = () => {
+      const p = video.play();
+      if (p !== undefined) {
+        p.catch(e => console.warn("Video play prevented:", e));
+      }
+    };
+
     ScrollTrigger.create({
       trigger: panel,
       start: "top 75%",
       end: "bottom 25%",
-      onEnter: () => video.play(),
+      onEnter: safePlay,
       onLeave: () => video.pause(),
-      onEnterBack: () => video.play(),
+      onEnterBack: safePlay,
       onLeaveBack: () => video.pause()
     });
   });
