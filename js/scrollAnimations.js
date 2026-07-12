@@ -180,7 +180,7 @@ export function initScrollAnimations({ camera, couple }) {
           immediateRender: false,
           scrollTrigger: {
             trigger: flowerSection,
-            start: "top bottom",
+            start: "top 75%",
             end: "center center",
             scrub: true
           }
@@ -202,7 +202,7 @@ export function initScrollAnimations({ camera, couple }) {
     });
 
     // Fade in canvas
-    tlFlower.to(flowerCanvas, { opacity: 1, duration: 0.05 }, 0);
+    tlFlower.fromTo(flowerCanvas, { opacity: 0 }, { opacity: 1, duration: 0.05 }, 0);
 
     // Scrub through frames
     tlFlower.to(flowerObj, {
@@ -253,40 +253,52 @@ export function initScrollAnimations({ camera, couple }) {
     }
   }
 
-  // 5. Camera Flythrough & Couple Sync (Moved to end so it accounts for all pins!)
-  const proxy = { progress: 0 };
-  const tmpPos = new THREE.Vector3();
-  const tmpLook = new THREE.Vector3();
+  // 5. Camera Flythrough & Couple Sync
+  const panels = gsap.utils.toArray('.panel');
+  const camState = {
+    x: WAYPOINTS[0].pos.x, y: WAYPOINTS[0].pos.y, z: WAYPOINTS[0].pos.z,
+    lx: WAYPOINTS[0].look.x, ly: WAYPOINTS[0].look.y, lz: WAYPOINTS[0].look.z,
+    progress: 0
+  };
 
-  function applyProgress(p) {
-    const total = WAYPOINTS.length - 1;
-    const scaled = THREE.MathUtils.clamp(p, 0, 1) * total;
-    const i = Math.floor(scaled);
-    const t = scaled - i;
-    const a = WAYPOINTS[i];
-    const b = WAYPOINTS[Math.min(i + 1, total)];
-    const ts = t * t * (3 - 2 * t);
-
-    tmpPos.lerpVectors(a.pos, b.pos, ts);
-    tmpLook.lerpVectors(a.look, b.look, ts);
-
-    camera.position.copy(tmpPos);
-    camera.lookAt(tmpLook);
-
+  const updateCamera = () => {
+    camera.position.set(camState.x, camState.y, camState.z);
+    camera.lookAt(camState.lx, camState.ly, camState.lz);
     if (couple && couple.setScrollProgress) {
-      couple.setScrollProgress(p);
+      couple.setScrollProgress(camState.progress);
     }
+  };
+
+  updateCamera();
+
+  if (panels.length === WAYPOINTS.length) {
+    panels.forEach((panel, i) => {
+      if (i === 0) return;
+      const prevWp = WAYPOINTS[i - 1];
+      const curWp = WAYPOINTS[i];
+      
+      gsap.fromTo(camState,
+        {
+          x: prevWp.pos.x, y: prevWp.pos.y, z: prevWp.pos.z,
+          lx: prevWp.look.x, ly: prevWp.look.y, lz: prevWp.look.z,
+          progress: (i - 1) / (WAYPOINTS.length - 1)
+        },
+        {
+          x: curWp.pos.x, y: curWp.pos.y, z: curWp.pos.z,
+          lx: curWp.look.x, ly: curWp.look.y, lz: curWp.look.z,
+          progress: i / (WAYPOINTS.length - 1),
+          ease: "sine.inOut",
+          scrollTrigger: {
+            trigger: panel,
+            start: "top bottom",
+            end: "top top",
+            scrub: true,
+            onUpdate: updateCamera
+          }
+        }
+      );
+    });
   }
-
-  applyProgress(0);
-
-  gsap.to(proxy, {
-    progress: 1, ease: 'none',
-    scrollTrigger: {
-      trigger: '#content', start: 'top top', end: 'bottom bottom', scrub: 1.2, invalidateOnRefresh: true,
-    },
-    onUpdate: () => applyProgress(proxy.progress),
-  });
 
   // Force an immediate refresh so texts and initial animations appear right away
   ScrollTrigger.refresh();
