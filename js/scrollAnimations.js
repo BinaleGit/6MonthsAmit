@@ -51,13 +51,21 @@ export function initScrollAnimations({ camera, couple }) {
       scrollTrigger: {
         trigger: timelineSection,
         start: "center center",
-        end: () => "+=" + track.scrollWidth,
+        end: () => "+=" + (track.scrollWidth || window.innerWidth),
         pin: true,
         scrub: 1,
         invalidateOnRefresh: true,
       }
     });
   }
+
+  // Watch for layout shifts (e.g. videos expanding on mobile) and refresh ScrollTrigger
+  let resizeTimeout;
+  const ro = new ResizeObserver(() => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => ScrollTrigger.refresh(), 100);
+  });
+  ro.observe(document.body);
 
   // 3. Videos Autoplay on Scroll
   gsap.utils.toArray('.panel--video').forEach((panel) => {
@@ -66,6 +74,13 @@ export function initScrollAnimations({ camera, couple }) {
 
     // Force load for mobile to prevent black screens
     video.load();
+    
+    // Refresh ScrollTrigger when video dimensions are known
+    if (video.readyState >= 1) {
+      ScrollTrigger.refresh();
+    } else {
+      video.addEventListener('loadedmetadata', () => ScrollTrigger.refresh());
+    }
 
     const safePlay = () => {
       const p = video.play();
@@ -228,28 +243,15 @@ export function initScrollAnimations({ camera, couple }) {
     tlFlower.fromTo("#flower-text-3", 
       { opacity: 0 }, { opacity: 1, duration: 0.05 }, 0.70
     ).to("#flower-text-3", 
-      { opacity: 0, duration: 0.05 }, 0.95
+      { opacity: 0, duration: 0.05 }, 0.90
     );
 
     // Fade out the canvas itself at the end of the flower sequence
-    tlFlower.to(flowerCanvas, { opacity: 0, duration: 0.05 }, 0.98);
+    tlFlower.to(flowerCanvas, { opacity: 0, duration: 0.05 }, 0.95);
 
-    // Fade OUT the black overlay (MUST be created after the pin so it calculates bottom correctly)
+    // Fade OUT the black overlay synced with the end of the pin
     if (blackOverlay) {
-      gsap.fromTo(blackOverlay,
-        { opacity: 1 },
-        {
-          opacity: 0,
-          ease: "none",
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: flowerSection,
-            start: "bottom bottom",
-            end: "bottom center",
-            scrub: true
-          }
-        }
-      );
+      tlFlower.to(blackOverlay, { opacity: 0, duration: 0.1 }, 0.9);
     }
   }
 
