@@ -54,7 +54,7 @@ html, body {
 }
 
 html {
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; REMOVED because it severely conflicts with GSAP ScrollTrigger pinning (causes jumpy miscalculations on mobile) */
 }
 
 body {

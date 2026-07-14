@@ -59,13 +59,18 @@ export function initScrollAnimations({ camera, couple }) {
     });
   }
 
-  // Watch for layout shifts (e.g. videos expanding on mobile) and refresh ScrollTrigger
-  let resizeTimeout;
-  const ro = new ResizeObserver(() => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => ScrollTrigger.refresh(), 100);
-  });
-  ro.observe(document.body);
+  // Watch for layout shifts only on specific elements if needed, but DO NOT observe body on mobile!
+  // GSAP natively handles window resizing and intelligently ignores URL bar hiding/showing on mobile.
+  
+  // Create a debounced refresh function to avoid multiple rapid refreshes when videos load
+  let videoRefreshTimeout;
+  const debouncedRefresh = () => {
+    clearTimeout(videoRefreshTimeout);
+    videoRefreshTimeout = setTimeout(() => {
+      ScrollTrigger.sort();
+      ScrollTrigger.refresh();
+    }, 150);
+  };
 
   // 3. Videos Autoplay on Scroll
   gsap.utils.toArray('.panel--video').forEach((panel) => {
@@ -77,9 +82,9 @@ export function initScrollAnimations({ camera, couple }) {
     
     // Refresh ScrollTrigger when video dimensions are known
     if (video.readyState >= 1) {
-      ScrollTrigger.refresh();
+      debouncedRefresh();
     } else {
-      video.addEventListener('loadedmetadata', () => ScrollTrigger.refresh());
+      video.addEventListener('loadedmetadata', debouncedRefresh);
     }
 
     const safePlay = () => {
@@ -321,11 +326,18 @@ export function initScrollAnimations({ camera, couple }) {
   }
 
   // Force an immediate refresh so texts and initial animations appear right away
+  // Sort triggers by their start position so that pinSpacing is calculated correctly 
+  // for triggers created out of DOM order (e.g. reveals, camera flythrough)
+  ScrollTrigger.sort();
   ScrollTrigger.refresh();
 
   if (document.readyState === 'complete') {
+    ScrollTrigger.sort();
     ScrollTrigger.refresh();
   } else {
-    window.addEventListener('load', () => ScrollTrigger.refresh());
+    window.addEventListener('load', () => {
+      ScrollTrigger.sort();
+      ScrollTrigger.refresh();
+    });
   }
 }
