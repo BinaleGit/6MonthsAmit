@@ -130,9 +130,12 @@ body {
 }
 
 .site-header__mark {
-  color: var(--gold);
-  font-size: 1rem;
-  text-shadow: var(--glow-gold);
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 30%;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 55%, transparent);
 }
 
 .site-header__names {
