@@ -55,6 +55,8 @@ export function initScrollAnimations({ camera, couple }) {
         pin: true,
         scrub: 1,
         invalidateOnRefresh: true,
+        refreshPriority: 10,
+        anticipatePin: 1,
       }
     });
   }
@@ -62,16 +64,6 @@ export function initScrollAnimations({ camera, couple }) {
   // Watch for layout shifts only on specific elements if needed, but DO NOT observe body on mobile!
   // GSAP natively handles window resizing and intelligently ignores URL bar hiding/showing on mobile.
   
-  // Create a debounced refresh function to avoid multiple rapid refreshes when videos load
-  let videoRefreshTimeout;
-  const debouncedRefresh = () => {
-    clearTimeout(videoRefreshTimeout);
-    videoRefreshTimeout = setTimeout(() => {
-      ScrollTrigger.sort();
-      ScrollTrigger.refresh();
-    }, 150);
-  };
-
   // 3. Videos Autoplay on Scroll
   gsap.utils.toArray('.panel--video').forEach((panel) => {
     const video = panel.querySelector('video');
@@ -80,13 +72,6 @@ export function initScrollAnimations({ camera, couple }) {
     // Force load for mobile to prevent black screens
     video.load();
     
-    // Refresh ScrollTrigger when video dimensions are known
-    if (video.readyState >= 1) {
-      debouncedRefresh();
-    } else {
-      video.addEventListener('loadedmetadata', debouncedRefresh);
-    }
-
     const safePlay = () => {
       const p = video.play();
       if (p !== undefined) {
@@ -235,6 +220,7 @@ export function initScrollAnimations({ camera, couple }) {
         pin: true,
         scrub: 0.5,
         anticipatePin: 1, // Add this to help smooth pinning on mobile
+        refreshPriority: 5,
         onUpdate: () => renderFlower()
       }
     });
