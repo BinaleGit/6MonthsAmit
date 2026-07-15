@@ -193,6 +193,24 @@ export function initScrollAnimations({ camera, couple }) {
       renderFlower();
     });
 
+    // =====================================================================
+    // 🌺 FLOWER ANIMATION TIMING CONTROLS (EDIT THESE TO DELAY THE START)
+    // =====================================================================
+    // To fix the issue where it starts too early on mobile (after the first video), 
+    // we can change the 'start' trigger positions specifically for mobile.
+    // 
+    // "top 75%" means the animation starts when the top of the flower section 
+    // is 75% of the way down the screen.
+    // Changing it to "top bottom" or "top 20%" will delay it further.
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    
+    // 1. Controls when the black background starts fading in
+    const overlayStart = isMobile ? "top 20%" : "top 75%"; 
+    
+    // 2. Controls when the flower actually pins and starts playing
+    const flowerPinStart = isMobile ? "top 30%" : "center center";
+    // =====================================================================
+
     // Fade IN the black overlay (can be created before pin)
     if (blackOverlay) {
       gsap.fromTo(blackOverlay, 
@@ -203,7 +221,7 @@ export function initScrollAnimations({ camera, couple }) {
           immediateRender: false,
           scrollTrigger: {
             trigger: flowerSection,
-            start: "top 75%",
+            start: overlayStart, // <-- Uses the variable defined above
             end: "center center",
             scrub: true
           }
@@ -215,7 +233,7 @@ export function initScrollAnimations({ camera, couple }) {
     const tlFlower = gsap.timeline({
       scrollTrigger: {
         trigger: flowerSection,
-        start: "center center",
+        start: flowerPinStart, // <-- Uses the variable defined above
         end: "+=400%", // pin for 4 viewport heights
         pin: true,
         scrub: 0.5,
