@@ -196,19 +196,24 @@ export function initScrollAnimations({ camera, couple }) {
     // =====================================================================
     // 🌺 FLOWER ANIMATION TIMING CONTROLS (EDIT THESE TO DELAY THE START)
     // =====================================================================
-    // To fix the issue where it starts too early on mobile (after the first video), 
-    // we can change the 'start' trigger positions specifically for mobile.
-    // 
-    // "top 75%" means the animation starts when the top of the flower section 
-    // is 75% of the way down the screen.
-    // Changing it to "top bottom" or "top 20%" will delay it further.
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
     
-    // 1. Controls when the black background starts fading in
-    const overlayStart = isMobile ? "top 20%" : "top 75%"; 
+    // "start" means: when the top of the flower section reaches this point on the screen.
+    // "100%" is the bottom of the screen, "50%" is the middle, "0%" is the top.
+    // To delay the animation, you make the start number SMALLER (closer to the top).
+    // IMPORTANT: 'overlayStart' MUST be a larger number than 'flowerPinStart'.
     
-    // 2. Controls when the flower actually pins and starts playing
-    const flowerPinStart = isMobile ? "top 30%" : "center center";
+    // 1. Controls when the black background starts fading in. 
+    // Default desktop: "top 75%", Mobile: "top 50%" (wait until it's halfway up)
+    const overlayStart = isMobile ? "top 50%" : "top 75%"; 
+    
+    // 2. Controls when the flower actually pins and the animation starts playing.
+    // Default desktop: "center center" (top 50%), Mobile: "top 25%" (wait until it's higher)
+    const flowerPinStart = isMobile ? "top 25%" : "center center";
+    
+    // 3. Controls how long the animation lasts (scroll distance).
+    // "+=400%" means it takes 4 screen heights to finish.
+    const flowerDuration = "+=400%";
     // =====================================================================
 
     // Fade IN the black overlay (can be created before pin)
@@ -221,8 +226,8 @@ export function initScrollAnimations({ camera, couple }) {
           immediateRender: false,
           scrollTrigger: {
             trigger: flowerSection,
-            start: overlayStart, // <-- Uses the variable defined above
-            end: "center center",
+            start: overlayStart,
+            end: flowerPinStart, // Finished fading in exactly when it pins
             scrub: true
           }
         }
@@ -233,8 +238,8 @@ export function initScrollAnimations({ camera, couple }) {
     const tlFlower = gsap.timeline({
       scrollTrigger: {
         trigger: flowerSection,
-        start: flowerPinStart, // <-- Uses the variable defined above
-        end: "+=400%", // pin for 4 viewport heights
+        start: flowerPinStart,
+        end: flowerDuration,
         pin: true,
         scrub: 0.5,
         anticipatePin: 1, // Add this to help smooth pinning on mobile
